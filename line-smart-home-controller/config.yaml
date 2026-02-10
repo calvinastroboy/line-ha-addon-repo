@@ -1,0 +1,35 @@
+name: "LINE Smart Home Controller"
+version: "1.0.0"
+slug: line-smart-home-controller
+description: "LINE Bot 智能家居控制器 - 直接整合 Home Assistant"
+url: "https://github.com/calvinastroboy/line-ha-addon-repo"
+startup: services
+boot: auto
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+ports:
+  "3001/tcp": 3001
+ports_description:
+  "3001/tcp": "LINE Bot Webhook 端口"
+options:
+  line_channel_access_token: ""
+  line_channel_secret: ""
+  webhook_path: "/webhook"
+  log_level: "info"
+schema:
+  line_channel_access_token: str
+  line_channel_secret: str
+  webhook_path: str?
+  log_level: list(trace|debug|info|notice|warning|error|fatal)?
+hassio_api: true
+hassio_role: manager
+homeassistant_api: true
+host_network: false
+ingress: true
+ingress_port: 3001
+panel_icon: mdi:chat
+panel_title: "LINE 智能控制"

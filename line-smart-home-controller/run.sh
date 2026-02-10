@@ -1,38 +1,38 @@
 #!/usr/bin/with-contenv bashio
 
-bashio::log.info "🚀 開始啟動 LINE Smart Home Controller Add-on..."
+bashio::log.info "Starting LINE Smart Home Controller Add-on..."
 
-# 檢查必要的配置
+# Check required configuration
 if ! bashio::config.has_value 'line_channel_access_token'; then
-    bashio::log.warning "⚠️ LINE Channel Access Token 未設定！"
-    bashio::log.info "請到 Add-on 設定頁面填入 LINE Bot 憑證"
+    bashio::log.warning "LINE Channel Access Token not configured!"
+    bashio::log.info "Please configure LINE Bot credentials in Add-on settings"
 fi
 
 if ! bashio::config.has_value 'line_channel_secret'; then
-    bashio::log.warning "⚠️ LINE Channel Secret 未設定！"  
-    bashio::log.info "請到 Add-on 設定頁面填入 LINE Bot 憑證"
+    bashio::log.warning "LINE Channel Secret not configured!"  
+    bashio::log.info "Please configure LINE Bot credentials in Add-on settings"
 fi
 
-# 顯示配置資訊
-bashio::log.info "📝 Webhook 路徑: $(bashio::config 'webhook_path')"
-bashio::log.info "📊 日誌級別: $(bashio::config 'log_level')"
+# Display configuration
+bashio::log.info "Webhook path: $(bashio::config 'webhook_path')"
+bashio::log.info "Log level: $(bashio::config 'log_level')"
 
-# 檢查 Supervisor Token
+# Check Supervisor Token
 if [[ -z "${SUPERVISOR_TOKEN}" ]]; then
-    bashio::log.error "❌ SUPERVISOR_TOKEN 環境變數未設定！"
+    bashio::log.error "SUPERVISOR_TOKEN environment variable not set!"
     bashio::exit.nok
 fi
 
-bashio::log.info "🏠 Home Assistant API 連線準備就緒"
+bashio::log.info "Home Assistant API connection ready"
 
-# 檢查網路連接
+# Test network connection
 if curl -f -s http://supervisor/core/api/ -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" > /dev/null; then
-    bashio::log.info "✅ HA API 連線測試成功"
+    bashio::log.info "HA API connection test successful"
 else
-    bashio::log.warning "⚠️ HA API 連線測試失敗，但繼續啟動"
+    bashio::log.warning "HA API connection test failed, but continuing startup"
 fi
 
-# 啟動 Node.js 應用程式
-bashio::log.info "🎯 正在啟動 Node.js 伺服器..."
+# Start Node.js application
+bashio::log.info "Starting Node.js server..."
 cd /app
 exec node app.js

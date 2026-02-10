@@ -1,34 +1,34 @@
 ARG BUILD_FROM=ghcr.io/hassio-addons/base:15.0.7
 FROM $BUILD_FROM
 
-# 設定環境變量
+# Environment variables
 ARG BUILD_ARCH
 ARG BUILD_VERSION
 
-# 設定 shell
+# Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# 安裝 Node.js 和 npm
+# Install Node.js and dependencies
 RUN apk add --no-cache \
     nodejs \
     npm \
     curl
 
-# 設定工作目錄
+# Set working directory  
 WORKDIR /app
 
-# 複製 package.json 先安裝依賴（利用 Docker 快取）
+# Copy package files for dependency caching
 COPY package*.json ./
 
-# 安裝 Node.js 依賴
-RUN npm ci --only=production \
+# Install Node.js dependencies using modern syntax
+RUN npm ci --omit=dev \
     && npm cache clean --force
 
-# 複製應用程式檔案
+# Copy application files
 COPY app.js ./
 COPY run.sh ./
 
-# 設定權限
+# Set permissions
 RUN chmod +x run.sh
 
 # 建立非特權用戶（可選，簡化版先移除）

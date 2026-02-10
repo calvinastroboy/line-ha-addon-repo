@@ -1,5 +1,5 @@
 name: "LINE Smart Home Controller"
-version: "1.0.0"
+version: "1.0.1"
 slug: line-smart-home-controller
 description: "LINE Bot 智能家居控制器 - 直接整合 Home Assistant"
 url: "https://github.com/calvinastroboy/line-ha-addon-repo"
